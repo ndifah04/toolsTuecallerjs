@@ -112,24 +112,24 @@ console.log(res);
 //    ]
 // }
 
-if ((res.data.status == 2 && !res.data.suspended)) {
+if ((res.status == 2 && !res.data.suspended)) {
 
   //  LOGIN SUCCESSFUL
    
-} else if (res.data.status == 11) {
+} else if (res.status == 11) {
   
   // INVALID OTP
    
-} else if (res.data.status == 7) {
+} else if (res.status == 7) {
   
   // RETRIES LIMIT EXCEED
 
-} else if (res.data.suspended) {
+} else if (res.suspended) {
 
   // ACCOUNT SUSPENDED
 
 } else {
-    console.log( res.data.message);
+    console.log( res.message);
   // UNKNOWN RESPONSE
 }
 
@@ -145,16 +145,16 @@ Make sure to replace phonenumber with the actual phone number, json_data with th
 
 The `res` variable will contain the JSON response from the OTP verification request. You can access the properties of the response to handle different scenarios:
 
-- If `res.data.status` is 2 and `res.data.suspended` is `false`, it means the login was successful. You can access the res.data.userId
-  `res.data.installationId`, `res.data.suspended`, `res.data.phones[0].phoneNumber`, and `res.data.phones[0].countryCode` properties for further processing.
+- If `res.status` is 2 and `res.suspended` is `false`, it means the login was successful.
+  `res.installationId`, `res.suspended`, `res.phones[0].phoneNumber`, and `res.phones[0].countryCode` properties for further processing.
 
-- If `res.data.status` is `11`, it means the OTP entered is invalid.
+- If `res.status` is `11`, it means the OTP entered is invalid.
 
-- If `res.data.status` is `7`, it means the number of OTP verification retries has exceeded the limit.
+- If `res.status` is `7`, it means the number of OTP verification retries has exceeded the limit.
 
-- If `res.data.suspended` is `true`, it means the account is suspended.
+- If `res.suspended` is `true`, it means the account is suspended.
 
-- For any other response, you can check `res.data.status` and res.data.message for more information.
+- For any other response, you can check `res.status` and res.message for more information.
 
 ### Simple Example of Searching Number
 
