@@ -20,11 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { bulkSearch } from "../dist/index.js";
+import { bulkSearch } from "../dist/search.js";
 
-var countryCode = "IN";
-var installationId = "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug";
-var phoneNumbers = "+9912345678,+14051234567,+919987654321"; // Phone numbers seperated by comma's
+describe("Bulk search a phone number", () => {
+  test("Should bulk search list of phone numbers and with there details", async () => {
+    var countryCode = "IN";
+    var installationId = "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug";
+    var phoneNumbers = "9912345678,+14051234567,+919987654321"; // Phone numbers seperated by comma's
 
-var response = await bulkSearch(phoneNumbers, countryCode, installationId);
-console.log(response);
+    var response = await bulkSearch(phoneNumbers, countryCode, installationId);
+    console.log(response);
+    expect(response).toBeDefined();
+  });
+});

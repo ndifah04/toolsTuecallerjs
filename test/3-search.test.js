@@ -20,13 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { search } from "../dist/index.js";
+import { search } from "../dist/search.js";
 
-var search_data = {
-  number: "9912345678",
-  countryCode: "IN", // Country code to use by default if  phone number is not in `e164` format(Internation format)
-  installationId: "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
-};
+describe("Search a phone number", () => {
+  test("Should search for a phone number details", async () => {
+    var search_data = {
+      number: process.env.TEST_PHONE_NUMBER || "9912345678",
+      countryCode: "IN", // Country code to use by default if  phone number is not in `e164` format(Internation format)
+      installationId:
+        process.env.TEST_INSTALLATION_ID ||
+        "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
+    };
+    var response = await search(search_data);
+    console.log(response);
 
-var response = await search(search_data);
-console.log(response.json());
+    expect(response).toBeDefined();
+    expect(response.data).toBeDefined();
+  });
+});

@@ -52,7 +52,7 @@ interface VerifyOtpResponse {
 const runCLI = async () => {
   const args: Arguments = yargs(hideBin(process.argv))
     .usage(
-      "Usage: \n$0  login (Login to truecaller).\n$0 -s [number] (command to search a number)."
+      "Usage: \n$0  login (Login to truecaller).\n$0 -s [number] (command to search a number).",
     )
     .option("search", {
       alias: "s",
@@ -127,10 +127,10 @@ const runCLI = async () => {
     if (args._[0] === "login" && args._.length <= 2) {
       console.log(
         chalk.yellow.bold(
-          "Login\n\n Enter mobile number in International Format\n Example : "
+          "Login\n\n Enter mobile number in International Format\n Example : ",
         ) +
           chalk.magenta("+919912345678") +
-          ".\n"
+          ".\n",
       );
 
       const inputNumber = await inquirer.prompt({
@@ -165,8 +165,8 @@ const runCLI = async () => {
         ) {
           console.log(
             chalk.magenta(
-              "\nPrevious request was found for this mobile number.\n"
-            )
+              "\nPrevious request was found for this mobile number.\n",
+            ),
           );
           const x = await inquirer.prompt({
             type: "confirm",
@@ -184,7 +184,9 @@ const runCLI = async () => {
       if (new_req) {
         response = await login(String(pn?.number?.e164));
         console.log(
-          chalk.yellow(`Sending OTP to ${chalk.green(pn?.number?.e164 ?? "")}.`)
+          chalk.yellow(
+            `Sending OTP to ${chalk.green(pn?.number?.e164 ?? "")}.`,
+          ),
         );
       }
 
@@ -218,24 +220,24 @@ const runCLI = async () => {
           const response1: VerifyOtpResponse = await verifyOtp(
             String(pn?.number?.e164),
             response,
-            token.otp
+            token.otp,
           );
 
           if (response1.status === 2 && !response1.suspended) {
             console.log(
               chalk.yellow.bold("Your installationId: ") +
-                chalk.green(response1.installationId)
+                chalk.green(response1.installationId),
             );
             console.log(
               `This is the installationId: ${chalk.green(
-                response1.installationId
-              )} used to authenticate with Truecaller.`
+                response1.installationId,
+              )} used to authenticate with Truecaller.`,
             );
 
             // Save the file
             fs.writeFileSync(
               authKeyFilePath,
-              JSON.stringify(response1, null, 3)
+              JSON.stringify(response1, null, 3),
             );
 
             console.log(chalk.green("Logged in successfully."));
@@ -243,12 +245,12 @@ const runCLI = async () => {
           } else if (response1.status === 11) {
             console.log(chalk.red("! Invalid OTP"));
             console.log(
-              `OTP not valid. Enter the 6-digit OTP received on ${pn?.number?.e164}.`
+              `OTP not valid. Enter the 6-digit OTP received on ${pn?.number?.e164}.`,
             );
           } else if (response1.status === 7) {
             console.log(chalk.red("Retries limit exceeded"));
             console.log(
-              `Retries on secret code reached for ${pn?.number?.e164}.`
+              `Retries on secret code reached for ${pn?.number?.e164}.`,
             );
           } else if (response1.suspended) {
             console.log(chalk.red("Oops... Your account is suspended."));
@@ -272,8 +274,8 @@ const runCLI = async () => {
         }
         console.log(
           chalk.red(
-            "You have exceeded the limit of verification attempts.\nPlease try again after some time."
-          )
+            "You have exceeded the limit of verification attempts.\nPlease try again after some time.",
+          ),
         );
       } else {
         console.log(chalk.red(response.message));
@@ -308,7 +310,7 @@ const runCLI = async () => {
                       NUMBER_LITERAL: "magenta",
                     },
                   })
-                : JSON.stringify(search_result.json())
+                : JSON.stringify(search_result.json()),
             );
           } else {
             console.log(
@@ -321,7 +323,7 @@ const runCLI = async () => {
                       NUMBER_LITERAL: "magenta",
                     },
                   })
-                : JSON.stringify(search_result.json(), null, 2)
+                : JSON.stringify(search_result.json(), null, 2),
             );
           }
         } else if (args.xml && !args.json && !args.text && !args.yaml) {
@@ -336,7 +338,7 @@ const runCLI = async () => {
           console.log(
             chalk.blue.bold("Name"),
             " : ",
-            chalk.green(search_result.getName())
+            chalk.green(search_result.getName()),
           );
         } else if (args.n && args.r && !args.e) {
           console.log(search_result.getName());
@@ -344,7 +346,7 @@ const runCLI = async () => {
           console.log(
             chalk.blue.bold("Email"),
             " : ",
-            chalk.green(search_result.getEmailId())
+            chalk.green(search_result.getEmailId()),
           );
         } else if (!args.n && args.r && args.e) {
           console.log(search_result.getEmailId());
@@ -376,7 +378,7 @@ const runCLI = async () => {
       const searchResult = await bulkSearch(
         String(args?.bs),
         countryCode,
-        installationId
+        installationId,
       );
 
       if (args.r) {
@@ -389,7 +391,7 @@ const runCLI = async () => {
                   NUMBER_LITERAL: "magenta",
                 },
               })
-            : JSON.stringify(searchResult)
+            : JSON.stringify(searchResult),
         );
       } else {
         console.log(
@@ -402,7 +404,7 @@ const runCLI = async () => {
                   NUMBER_LITERAL: "magenta",
                 },
               })
-            : JSON.stringify(searchResult, null, 2)
+            : JSON.stringify(searchResult, null, 2),
         );
       }
     } catch (error: unknown) {
@@ -432,7 +434,7 @@ const runCLI = async () => {
           : console.log(
               chalk.blue.bold("Your InstallationId") +
                 " : " +
-                chalk.green(installationId)
+                chalk.green(installationId),
             );
       }
     } catch (error: unknown) {

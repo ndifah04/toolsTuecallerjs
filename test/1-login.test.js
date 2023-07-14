@@ -20,8 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// import truecallerjs from "../dist/index.js";
+
+// 1-login.test.js
+
 import { login } from "../dist/index.js";
 
-var json_data = await login("+919912345678");
-
-console.log(json_data);
+describe("Login Tests", () => {
+  test("should perform login", async () => {
+    const phoneNumber = process.env.TEST_PHONE_NUMBER || "+919912345678";
+    const result = await login(phoneNumber);
+    console.log(result);
+    expect(result.status).toBeDefined();
+    expect(result.message).toBeDefined();
+    expect(result.parsedPhoneNumber).toBeDefined();
+    expect(result.parsedCountryCode).toBeDefined();
+    expect(result.requestId).toBeDefined();
+    expect(result.method).toBeDefined();
+    expect(result.tokenTtl).toBeDefined();
+  });
+});

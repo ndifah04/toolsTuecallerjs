@@ -32,7 +32,7 @@ declare namespace truecallerjs {
   function verifyOtp(
     phoneNumber: string,
     jsonData: LoginResponse,
-    otp: string
+    otp: string,
   ): Promise<object>;
 
   /**
@@ -131,7 +131,7 @@ declare namespace truecallerjs {
   function bulkSearch(
     phoneNumbers: string,
     countryCode: string,
-    installationId: string
+    installationId: string,
   ): Promise<ResponseData>;
 }
 

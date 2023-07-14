@@ -24,6 +24,6 @@ declare module "json-to-plain-text" {
   export function toPlainText(
     obj: unknown,
     color?: boolean,
-    space?: boolean
+    space?: boolean,
   ): string;
 }

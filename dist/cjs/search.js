@@ -98,26 +98,20 @@ class Format {
     }
 }
 /**
+ * Searching phone number on truecallerjs
  * @var response => {...}
- * @method response.json(color) JSON response. @param {Boolean} color
- * @method response.xml(color)  XML output. @param {Boolean} color .
- * @method response.yaml(color) YAML output. @param {Boolean} color
- * @method response.html(color) HTML output. @param {Boolean} color
- * @method response.text(color,space) JSON response. @param {Boolean} color . @param {Boolean} space Spacing between keys and values.
- *
- *
+ * @method response.json(color) JSON response.
+ * @method response.xml(color)  XML output.
+ * @method response.yaml(color) YAML output.
+ * @method response.html(color) HTML output.
+ * @method response.text(color,space) JSON response.
  * @method response.getName() => "Sumith Emmadi"
  * @method response.getAlternateName() => "sumith"
  * @method response.getAddresses() => {....}
  * @method response.getEmailId() => sumithemmadi244@gmail.com
  * @method response.getCountryDetails() => {...}
- */
-/**
- *  Searching phone number on truecallerjs
- *
  * @name search
  * @function truecallerjs.search(search_data)
- * @param {Object} search_data It is a json containing phonenumber,countryCode,installationId
  * @return {Object} It contains details of the phone number
  */
 function search(searchData) {
@@ -144,6 +138,7 @@ function search(searchData) {
         },
     })
         .then((response) => {
+        // console.log(response);
         return new Format(response.data);
     }, 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -154,13 +149,10 @@ function search(searchData) {
 exports.search = search;
 /**
  * Bulk search on truecallerjs
- *
  * @name bulkSearch
  * @function truecallerjs.bulkSearch(phoneNumbers,countryCode,installationId)
  * @param {String} phoneNumbers phone number separted with coma.
- * @param {String} countryCode Country code to use by default if any phone number is not in `e164` format(Internation format)
  * @param {String} installationId 6-digits OTP .
- *
  * @return {Object} It contains phone numbers information in a array
  */
 function bulkSearch(phoneNumbers, regionCode, installationId) {

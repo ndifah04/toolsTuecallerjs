@@ -15,7 +15,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import { login } from "./login.js";
-import { verifyOtp } from "./verifyOtp.js";
-import { search, bulkSearch } from "./search.js";
-export { login, verifyOtp, search, bulkSearch };
+import { login as loginFunction } from "./login.js";
+import { verifyOtp as verifyOtpFunction } from "./verifyOtp.js";
+import { search as searchFunction, bulkSearch as bulkSearchFunction, } from "./search.js";
+export const login = loginFunction;
+export const verifyOtp = verifyOtpFunction;
+export const search = searchFunction;
+export const bulkSearch = bulkSearchFunction;
+const truecallerjs = {
+    login,
+    verifyOtp,
+    search,
+    bulkSearch,
+};
+export default truecallerjs;

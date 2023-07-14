@@ -45,32 +45,50 @@ The function returns a Promise that resolves to a JSON object with the following
 ### Example
 
 ```js
-import truecallerjs from "truecallerjs";
+import truecallerjs, { LoginResponse } from "truecallerjs";
 
-var json_data = await truecallerjs.login("+919912345678");
+async function performLogin(): Promise<void> {
+  try {
+    const phoneNumber: string = "+919912345678";
+    const json_data: LoginResponse = await truecallerjs.login(phoneNumber);
 
-// Example response:
-// {
-//     "status": 1,
-//     "message": "Sent",
-//     "domain": "noneu",
-//     "parsedPhoneNumber": 919912345678,
-//     "parsedCountryCode": "IN",
-//     "requestId": "6fe0eba6-acds-24dc-66de-15b3fba349c3",
-//     "method": "sms",
-//     "tokenTtl": 300
-// }
+    // Example response:
+    // {
+    //     "status": 1,
+    //     "message": "Sent",
+    //     "domain": "noneu",
+    //     "parsedPhoneNumber": 919912345678,
+    //     "parsedCountryCode": "IN",
+    //     "requestId": "6fe0eba6-acds-24dc-66de-15b3fba349c3",
+    //     "method": "sms",
+    //     "tokenTtl": 300
+    // }
 
-if (json_data.status === 1 || json_data.status === 9) {
-    // OTP sent successfully
-    // Handle the response accordingly
-} else if (json_data.status === 6 || json_data.status === 5) {
-    // Verification attempts exceeded
-    // Handle the response accordingly
-} else {
-    // Unknown response
-    // Handle the response accordingly
+    if (json_data.status === 1 || json_data.status === 9) {
+      // OTP sent successfully
+      // Handle the response accordingly
+      console.log("OTP sent successfully");
+      console.log("Request ID:", json_data.requestId);
+      console.log("Token TTL:", json_data.tokenTtl);
+    } else if (json_data.status === 6 || json_data.status === 5) {
+      // Verification attempts exceeded
+      // Handle the response accordingly
+      console.log("Verification attempts exceeded");
+      console.log("Status:", json_data.status);
+      console.log("Message:", json_data.message);
+    } else {
+      // Unknown response
+      // Handle the response accordingly
+      console.log("Unknown response");
+      console.log("Status:", json_data.status);
+      console.log("Message:", json_data.message);
+    }
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
 }
+
+performLogin();
 ```
 
 > **Note** : Make sure to replace +919912345678 with the actual phone number you want to use.
@@ -88,51 +106,83 @@ if (json_data.status === 1 || json_data.status === 9) {
 - The verifyOtp function is used to verify the mobile number with the OTP (One-Time Password) received.
 
 ```js
-import truecallerjs from "truecallerjs";
+import truecallerjs, { LoginResponse } from "truecallerjs";
 
+async function performOtpVerification(): Promise<void> {
+  try {
+    const phoneNumber: string = "+919912345678";
+    const json_data: LoginResponse = await truecallerjs.login(phoneNumber);
 
-var json_data = await truecallerjs.login("+919912345678"); // Phone number should be in international format and it must be a 
-var res = await truecallerjs.verifyOtp(phonenumber, json_data, otp);
+    // Example response from login:
+    // {
+    //    "status": 1,
+    //    "message": "Sent",
+    //    "domain": "noneu",
+    //    "parsedPhoneNumber": 919912345678,
+    //    "parsedCountryCode": "IN",
+    //    "requestId": "6fe0eba6-acds-24dc-66de-15b3fba349c3",
+    //    "method": "sms",
+    //    "tokenTtl": 300
+    // }
 
-console.log(res);
+    const otp: string = "123456"; // Replace with the actual OTP
 
-// {
-//    "status": 2,
-//    "message": "Verified",
-//    "installationId": "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
-//    "ttl": 259200,
-//    "userId": 1234567890123456789,
-//    "suspended": false,
-//    "phones": [
-//       {
-//          "phoneNumber": 919912345678,
-//          "countryCode": "IN",
-//          "priority": 1
-//       }
-//    ]
-// }
+    const res: object = await truecallerjs.verifyOtp(
+      phoneNumber,
+      json_data,
+      otp
+    );
 
-if ((res.status == 2 && !res.data.suspended)) {
+    console.log(res);
 
-  //  LOGIN SUCCESSFUL
-   
-} else if (res.status == 11) {
-  
-  // INVALID OTP
-   
-} else if (res.status == 7) {
-  
-  // RETRIES LIMIT EXCEED
+    // Example response from OTP verification:
+    // {
+    //    "status": 2,
+    //    "message": "Verified",
+    //    "installationId": "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
+    //    "ttl": 259200,
+    //    "userId": 1234567890123456789,
+    //    "suspended": false,
+    //    "phones": [
+    //       {
+    //          "phoneNumber": 919912345678,
+    //          "countryCode": "IN",
+    //          "priority": 1
+    //       }
+    //    ]
+    // }
 
-} else if (res.suspended) {
-
-  // ACCOUNT SUSPENDED
-
-} else {
-    console.log( res.message);
-  // UNKNOWN RESPONSE
+    if (res.status === 2 && !res.suspended) {
+      // LOGIN SUCCESSFUL
+      console.log("Login successful");
+      console.log("Installation ID:", res.installationId);
+      console.log("User ID:", res.userId);
+    } else if (res.status === 11) {
+      // INVALID OTP
+      console.log("Invalid OTP");
+      console.log("Status:", res.status);
+      console.log("Message:", res.message);
+    } else if (res.status === 7) {
+      // RETRIES LIMIT EXCEEDED
+      console.log("Retries limit exceeded");
+      console.log("Status:", res.status);
+      console.log("Message:", res.message);
+    } else if (res.suspended) {
+      // ACCOUNT SUSPENDED
+      console.log("Account suspended");
+      console.log("Status:", res.status);
+      console.log("Message:", res.message);
+    } else {
+      // UNKNOWN RESPONSE
+      console.log("Unknown response");
+      console.log("Message:", res.message);
+    }
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
 }
 
+performOtpVerification();
 ```
 
 | status    | message                         |
@@ -161,16 +211,36 @@ The `res` variable will contain the JSON response from the OTP verification requ
 - Normal search for a phone number.
 
 ```js
-import truecallerjs from "truecallerjs";
+import truecallerjs, { SearchData, Format } from "truecallerjs";
 
-var search_data = {
-  number: "9912345678",
-  countryCode: "IN",
-  installationId: "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
-};
+async function performTruecallerSearch(): Promise<void> {
+  const searchData: SearchData = {
+    number: "9912345678",
+    countryCode: "IN",
+    installationId: "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
+  };
 
-var response = await truecallerjs.search(search_data);
-console.log(response.json());
+  try {
+    const response: Format = await truecallerjs.search(searchData);
+    console.log(response.json());
+
+    // Additional response methods:
+    // console.log(response.xml());
+    // console.log(response.yaml());
+    // console.log(response.text());
+
+    // Example of available data from the response:
+    console.log(response.getName()); // "Sumith Emmadi"
+    console.log(response.getAlternateName()); // "sumith"
+    console.log(response.getAddresses()); // {....}
+    console.log(response.getEmailId()); // example@domain.com
+    console.log(response.getCountryDetails()); // {...}
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+performTruecallerSearch();
 ```
 
 - `number` : Phone number
@@ -206,12 +276,6 @@ The `response` object represents the response obtained from a query. It provides
   - Returns: YAML output as a string.
   - Description: This method returns the YAML output as a string. The optional `color` parameter determines whether to include color formatting in the output.
 
-- `response.html(color)`
-  - Parameters:
-    - `color` (Boolean): Indicates whether to add color formatting to the HTML output.
-  - Returns: HTML output as a string.
-  - Description: This method returns the HTML output as a string. The optional `color` parameter determines whether to include color formatting in the output.
-
 - `response.text(color, space)`
   - Parameters:
     - `color` (Boolean): Indicates whether to add color formatting to the JSON output.
@@ -246,18 +310,22 @@ The `response` object represents the response obtained from a query. It provides
 The `truecallerjs` package also supports bulk search on multiple phone numbers:
 
 ```js
-import truecallerjs from "truecallerjs";
+import truecallerjs, { ResponseData, Format } from "truecallerjs";
 
-var countryCode = "IN";
-var installationId = "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug";
-var phoneNumbers = "+9912345678,+14051234567,+919987654321"; // Phone numbers separated by commas
+async function performBulkTruecallerSearch(): Promise<void> {
+  const countryCode: string = "IN";
+  const installationId: string = "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug";
+  const phoneNumbers: string = "+9912345678,+14051234567,+919987654321";
 
-var response = await truecallerjs.bulkSearch(
-  phoneNumbers,
-  countryCode,
-  installationId
-);
-console.log(response);
+  try {
+    const response: ResponseData = await truecallerjs.bulkSearch(phoneNumbers, countryCode, installationId);
+    console.log(response);
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+performBulkTruecallerSearch();
 ```
 
 In this example, the `truecallerjs.bulkSearch()` function is used to perform bulk searches on multiple phone numbers. The `phoneNumbers` parameter should contain the phone numbers separated by commas. The `countryCode` and `installationId` parameters are used to specify the default country code and installation ID, respectively.

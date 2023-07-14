@@ -118,29 +118,36 @@ npm install truecallerjs
 Here's a basic example of how to perform a normal search for a phone number:
 
 ```js
-import truecallerjs from "truecallerjs";
+import truecallerjs, { SearchData, Format } from "truecallerjs";
 
-var search_data = {
-  number: "9912345678",
-  countryCode: "IN",
-  installationId: "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
-};
+async function performTruecallerSearch(): Promise<void> {
+  const searchData: SearchData = {
+    number: "9912345678",
+    countryCode: "IN",
+    installationId: "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug",
+  };
 
-var response = await truecallerjs.search(search_data);
-console.log(response.json());
+  try {
+    const response: Format = await truecallerjs.search(searchData);
+    console.log(response.json());
 
-// Additional response methods:
-// response.json()
-// response.xml()
-// response.yaml()
-// response.text()
+    // Additional response methods:
+    // console.log(response.xml());
+    // console.log(response.yaml());
+    // console.log(response.text());
 
-// Example of available data from the response:
-// response.getName() => "Sumith Emmadi"
-// response.getAlternateName() => "sumith"  
-// response.getAddresses() => {....}
-// response.getEmailId() => example@domain.com
-// response.getCountryDetails() => {...}
+    // Example of available data from the response:
+    console.log(response.getName()); // "Sumith Emmadi"
+    console.log(response.getAlternateName()); // "sumith"
+    console.log(response.getAddresses()); // {....}
+    console.log(response.getEmailId()); // example@domain.com
+    console.log(response.getCountryDetails()); // {...}
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+performTruecallerSearch();
 ```
 
 In the above example, the `truecallerjs` package is used to search for a phone number. The `search_data` object contains the necessary parameters, including the number, country code, and installation ID. The response from the `truecallerjs.search()` function provides various methods to access the returned data.
@@ -152,18 +159,23 @@ In the above example, the `truecallerjs` package is used to search for a phone n
 The `truecallerjs` package also supports bulk search on multiple phone numbers:
 
 ```js
-import truecallerjs from "truecallerjs";
+import truecallerjs, { ResponseData, Format } from "truecallerjs";
 
-var countryCode = "IN";
-var installationId = "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug";
-var phoneNumbers = "+9912345678,+14051234567,+919987654321"; // Phone numbers separated by commas
+async function performBulkTruecallerSearch(): Promise<void> {
+  const countryCode: string = "IN";
+  const installationId: string = "a1k07--Vgdfyvv_rftf5uuudhuhnkljyvvtfftjuhbuijbhug";
+  const phoneNumbers: string = "+9912345678,+14051234567,+919987654321";
 
-var response = await truecallerjs.bulkSearch(
-  phoneNumbers,
-  countryCode,
-  installationId
-);
-console.log(response);
+  try {
+    const response: ResponseData = await truecallerjs.bulkSearch(phoneNumbers, countryCode, installationId);
+    console.log(response);
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+}
+
+performBulkTruecallerSearch();
+
 ```
 
 In this example, the `truecallerjs.bulkSearch()` function is used to perform bulk searches on multiple phone numbers. The `phoneNumbers` parameter should contain the phone numbers separated by commas. The `countryCode` and `installationId` parameters are used to specify the default country code and installation ID, respectively.

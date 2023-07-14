@@ -19,9 +19,16 @@ exports.bulkSearch = exports.search = exports.verifyOtp = exports.login = void 0
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 const login_js_1 = require("./login.js");
-Object.defineProperty(exports, "login", { enumerable: true, get: function () { return login_js_1.login; } });
 const verifyOtp_js_1 = require("./verifyOtp.js");
-Object.defineProperty(exports, "verifyOtp", { enumerable: true, get: function () { return verifyOtp_js_1.verifyOtp; } });
 const search_js_1 = require("./search.js");
-Object.defineProperty(exports, "search", { enumerable: true, get: function () { return search_js_1.search; } });
-Object.defineProperty(exports, "bulkSearch", { enumerable: true, get: function () { return search_js_1.bulkSearch; } });
+exports.login = login_js_1.login;
+exports.verifyOtp = verifyOtp_js_1.verifyOtp;
+exports.search = search_js_1.search;
+exports.bulkSearch = search_js_1.bulkSearch;
+const truecallerjs = {
+    login: exports.login,
+    verifyOtp: exports.verifyOtp,
+    search: exports.search,
+    bulkSearch: exports.bulkSearch,
+};
+exports.default = truecallerjs;

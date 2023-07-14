@@ -39,7 +39,7 @@ import axios, { AxiosRequestConfig } from "axios";
 async function verifyOtp(
   phonenumber: string,
   json_data: any,
-  otp: string
+  otp: string,
 ): Promise<object> {
   const pn = parsePhoneNumber(phonenumber);
   if (!pn.valid) {

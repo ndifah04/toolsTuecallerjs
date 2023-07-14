@@ -21,24 +21,15 @@
 // SOFTWARE.
 
 import { login, verifyOtp } from "../dist/index.js";
-import inquirer from "inquirer";
 
-var json_data = await login("+919912345677"); // Phone number should be in international format and it must be a string
+describe("Verify Otp", () => {
+  test("Should verify otp", async () => {
+    const phoneNumber = "+919912345678";
+    const result = await login(phoneNumber);
 
-const token = await inquirer.prompt({
-  type: "input",
-  name: "otp",
-  message: "Enter Received OTP:",
-  validate: async (input) => {
-    const isnum = /^\d+$/.test(String(input));
-
-    if (input.length !== 6 || !isnum) {
-      return "Enter a valid 6-digit OTP.";
-    }
-    return true;
-  },
+    var data = await verifyOtp(phoneNumber, result, "123456");
+    console.log(data);
+    expect(data.status).toBeDefined();
+    expect(data.message).toBeDefined();
+  });
 });
-
-var data = await verifyOtp("+919912345677", json_data, token.otp);
-
-console.log(data);
