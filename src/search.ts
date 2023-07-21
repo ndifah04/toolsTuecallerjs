@@ -23,7 +23,7 @@
 import axios, { AxiosResponse } from "axios";
 import { parsePhoneNumber } from "awesome-phonenumber";
 import { Builder } from "xml2js";
-import { toPlainText } from "json-to-plain-text";
+import { jsonToPlainText } from "json-to-plain-text";
 import { stringify as yamlStringify } from "json-to-pretty-yaml";
 import { countries } from "./data/countries.js";
 
@@ -93,7 +93,14 @@ class Format {
   }
 
   public text(color = false, space = false): string {
-    return toPlainText(JSON.parse(JSON.stringify(this.json())), color, space);
+    const options = {
+      color: color, // Whether to apply colors to the output or not
+      spacing: space, // Whether to include spacing after colons or not
+      squareBracketsForArray: false, // Whether to use square brackets for arrays or not
+      doubleQuotesForKeys: false, // Whether to use double quotes for object keys or not
+      doubleQuotesForValues: false,
+    };
+    return jsonToPlainText(JSON.parse(JSON.stringify(this.json())), options);
   }
 
   public getName(): string {
@@ -195,7 +202,7 @@ function search(searchData: SearchData): Promise<Format> {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (error: any) => {
         return new Format(error);
-      },
+      }
     );
 }
 
@@ -210,7 +217,7 @@ function search(searchData: SearchData): Promise<Format> {
 function bulkSearch(
   phoneNumbers: string,
   regionCode: string,
-  installationId: string,
+  installationId: string
 ): Promise<ResponseData> {
   return axios
     .get(`https://search5-noneu.truecaller.com/v2/bulk`, {
@@ -235,7 +242,7 @@ function bulkSearch(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (error: any) => {
         return JSON.parse(JSON.stringify(error));
-      },
+      }
     );
 }
 

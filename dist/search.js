@@ -18,7 +18,7 @@
 import axios from "axios";
 import { parsePhoneNumber } from "awesome-phonenumber";
 import { Builder } from "xml2js";
-import { toPlainText } from "json-to-plain-text";
+import { jsonToPlainText } from "json-to-plain-text";
 import { stringify as yamlStringify } from "json-to-pretty-yaml";
 import { countries } from "./data/countries.js";
 class Format {
@@ -39,7 +39,14 @@ class Format {
         return yamlStringify(JSON.parse(JSON.stringify(this.json())), color);
     }
     text(color = false, space = false) {
-        return toPlainText(JSON.parse(JSON.stringify(this.json())), color, space);
+        const options = {
+            color: color,
+            spacing: space,
+            squareBracketsForArray: false,
+            doubleQuotesForKeys: false,
+            doubleQuotesForValues: false,
+        };
+        return jsonToPlainText(JSON.parse(JSON.stringify(this.json())), options);
     }
     getName() {
         return this.json()?.data[0]?.name || "unknown name";

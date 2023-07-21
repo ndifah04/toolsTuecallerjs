@@ -44,7 +44,14 @@ class Format {
         return (0, json_to_pretty_yaml_1.stringify)(JSON.parse(JSON.stringify(this.json())), color);
     }
     text(color = false, space = false) {
-        return (0, json_to_plain_text_1.toPlainText)(JSON.parse(JSON.stringify(this.json())), color, space);
+        const options = {
+            color: color,
+            spacing: space,
+            squareBracketsForArray: false,
+            doubleQuotesForKeys: false,
+            doubleQuotesForValues: false,
+        };
+        return (0, json_to_plain_text_1.jsonToPlainText)(JSON.parse(JSON.stringify(this.json())), options);
     }
     getName() {
         var _a, _b;

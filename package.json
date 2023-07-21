@@ -1,6 +1,6 @@
 {
   "name": "truecallerjs",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "TruecallerJS: A library for effortless retrieval of phone number details using the Truecaller API in Node.js, JavaScript, and TypeScript projects.",
   "main": "dist/cjs/index.js",
   "module": "dist/index.js",
@@ -74,7 +74,7 @@
     "chalk": "^5.2.0",
     "inquirer": "^9.2.7",
     "json-colorizer": "^2.2.2",
-    "json-to-plain-text": "^1.0.5",
+    "json-to-plain-text": "^1.1.1",
     "json-to-pretty-yaml": "^1.2.2",
     "ts-node": "^10.9.1",
     "xml2js": "^0.6.0",
